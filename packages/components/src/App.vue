@@ -2,7 +2,7 @@
  * @Author: yangfeng
  * @Date: 2023-08-28 13:02:26
  * @LastEditors: yangfeng
- * @LastEditTime: 2023-08-28 17:11:42
+ * @LastEditTime: 2023-08-28 17:54:59
  * @FilePath: \super\packages\components\src\App.vue
 -->
 <template>
@@ -48,7 +48,12 @@ const tableColumns = [
 	},
 	{ prop: "operation", label: "操作", fixed: "right", width: 240 }
 ]
-const tableData = [{
-  createBy:"张三"
-}]
+const tableData = {
+  data:[{
+    createBy:"张三"
+  }],
+  total:1,
+  pageSize:10,
+  currPage:1
+}
 </script>

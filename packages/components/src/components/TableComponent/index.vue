@@ -38,6 +38,20 @@
       </el-table-column>
     </template>
   </el-table>
+  <slot name="pagination">
+    <el-pagination
+      style="margin-top: 24px;justify-content: end;"
+      v-if="pagination"
+      :current-page="pageable.currPage"
+      :page-size="pageable.pageSize"
+      :page-sizes="[10, 25, 50, 100]"
+      :background="true"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="Number(pageable.total)"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    ></el-pagination>
+  </slot>
 </template>
 <script lang="ts" setup>
 import { ref,reactive, watch } from "vue";
@@ -100,7 +114,36 @@ const pageable = reactive({
     pageSize: 10,
     // 总条数
     total: 0
-  })
+})
+const tableData = ref([])
+const getTableList = async () => {
+		try {
+      // 如果tableData是存在的
+			if(props.tableData){
+        // 如果tableData是对象
+        if(props.tableData instanceof Object){
+          tableData.value = props.tableData.data
+          pageable.currPage = props.tableData.currPage;
+          pageable.pageSize = props.tableData.pageSize;
+          pageable.total = props.tableData.total;
+        }else {
+          tableData.value = props.tableData
+        }
+      }else {
+        // 如果不存在需要请求
+      }
+		} catch (error) {
+			console.log(error);
+		}
+};
+// 监听数据
+watch(
+	() => props.tableData,
+	() => {
+		getTableList()
+	},
+	{ deep: true, immediate: true }
+);
 //序号自增
 const getIndex = (index: number) => {
 	const page = pageable.currPage;
@@ -112,6 +155,14 @@ const getIndex = (index: number) => {
 	return (page - 1) * pagesize + index + 1;
 };
 
+// 分页
+const handleSizeChange = (val: number) => {
+		pageable.currPage = 1;
+		pageable.pageSize = val;
+};
+const handleCurrentChange = (val: number) => {
+		pageable.currPage = val;
+};
 const searchFormRef = ref();
 // 点击查询
 const clickSearch = ()=>{
