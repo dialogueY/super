@@ -1,5 +1,5 @@
 <template>
-  <SearchForm :formConfig="formConfig" ref="searchFormRef">
+  <SearchForm :formConfig="formConfig" ref="searchFormRef" :searchParam="searchParam">
     <template #searchBtn>
       <el-col :span="8" style="padding-left: 32px;" v-if="showSearch">
         <el-button type="primary" @click.stop="clickSearch">查询</el-button>
@@ -166,6 +166,6 @@ const handleCurrentChange = (val: number) => {
 const searchFormRef = ref();
 // 点击查询
 const clickSearch = ()=>{
-    console.log(searchFormRef.value.searchParam)
+    console.log(searchParam.value)
 }
 </script>

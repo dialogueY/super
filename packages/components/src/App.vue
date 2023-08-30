@@ -2,7 +2,7 @@
  * @Author: yangfeng
  * @Date: 2023-08-28 13:02:26
  * @LastEditors: yangfeng
- * @LastEditTime: 2023-08-28 17:54:59
+ * @LastEditTime: 2023-08-30 13:17:06
  * @FilePath: \super\packages\components\src\App.vue
 -->
 <template>
@@ -23,22 +23,23 @@ import TableComponent from "./components/TableComponent/index.vue";
 const tableColumns = [
   { type: "selection", fixed: "left", width: 48 },
 	{ type: "index", label: "序号", width: 80 },
+	{
+		prop: "createBy",
+		label: "创建人",
+    search: { type: "Input" },
+		minWidth: 120
+	},
   {
 		prop: "createplace",
 		label: "创建地点",
     search: { 
       type: "Select",
+      link:['createBy'],
       defaultOptions:[{
         label:"北京",
         value:"beijing"
       }] 
     },
-		minWidth: 120
-	},
-	{
-		prop: "createBy",
-		label: "创建人",
-    search: { type: "Input" },
 		minWidth: 120
 	},
 	{

@@ -19,15 +19,11 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 // import 
-const {searchProps} = defineProps<{searchProps:any }>();
+const {searchProps,searchParam} = defineProps<{searchProps:any,searchParam:any }>();
 
 const searchVal = ref(searchProps.searchVal)
 
-interface FilterEmits {
-	(e: "changeValue", prop:string,value: any): void;
-}
-const emit = defineEmits<FilterEmits>();
 const changeValue = (val:any)=>{
-  emit("changeValue",searchProps.prop,val);
+  searchParam[searchProps.prop] = val
 }
 </script>

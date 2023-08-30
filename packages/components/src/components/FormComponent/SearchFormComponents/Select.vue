@@ -2,7 +2,7 @@
  * @Author: yangfeng
  * @Date: 2023-08-28 15:49:58
  * @LastEditors: yangfeng
- * @LastEditTime: 2023-08-28 17:00:55
+ * @LastEditTime: 2023-08-30 13:40:09
  * @FilePath: \super\packages\components\src\components\FormComponent\SearchFormComponents\Select.vue
  * @Description: 
 -->
@@ -19,18 +19,31 @@
 		</el-select>
 </template>
 <script lang="ts" setup>
-import { ref,computed } from "vue";
+import { ref,computed,watch } from "vue";
 // import 
-const {searchProps} = defineProps<{searchProps:any }>();
+const {searchProps,searchParam} = defineProps<{searchProps:any,searchParam:any }>();
 
 const columnEnum = ref<any>([]);
 
 const initParams = async ()=>{
+    // 如果传递了默认值，下拉选项使用默认值
     if(searchProps.defaultOptions){
       columnEnum.value = searchProps.defaultOptions;
     }
     if(searchProps.getOptions){
       columnEnum.value = await searchProps.getOptions();
+    }
+    // 如果有关联项，需要监听关联项的改变
+    if(searchProps.link){
+      searchProps.link.forEach((el:string)=>{
+          watch(
+            ()=>searchParam[el],
+            ()=>{
+              console.log(searchParam)
+            },
+            { deep: true, immediate: true }
+          )
+      })
     }
 }
 initParams();
@@ -45,11 +58,7 @@ const fieldNames = computed(() => {
 
 const searchVal = ref(searchProps.searchVal)
 
-interface FilterEmits {
-	(e: "changeValue", prop:string,value: any): void;
-}
-const emit = defineEmits<FilterEmits>();
 const changeValue = (val:any)=>{
-  emit("changeValue",searchProps.prop,val);
+  searchParam[searchProps.prop] = val;
 }
 </script>
